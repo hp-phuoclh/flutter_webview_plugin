@@ -37,7 +37,7 @@ public class JsCode {
             "    }\n" +
             "\n" +
             "    function flutterClickRow(index) {\n" +
-            "      console.log(window._FLUTTER_DATA_LinkGroups_[index]);\n" +
-            "      window.flutter_inappwebview.callHandler('clickStation',window._FLUTTER_DATA_LinkGroups_[index]);\n" +
+            "      console.log(window._FLUTTER_DATA_LinkGroups_[index]);\nvar data = JSON.stringify(window._FLUTTER_DATA_LinkGroups_[index]);" +
+            "      window.flutter_inappwebview.callHandler('clickStation',data);\n" +
             "    }";
 }
