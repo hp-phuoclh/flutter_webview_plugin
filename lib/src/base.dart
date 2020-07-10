@@ -44,9 +44,9 @@ class FlutterWebviewPlugin {
   final _onPostMessage = StreamController<JavascriptMessage>.broadcast();
 
   final Map<String, JavascriptChannel> _javascriptChannels =
-      // ignoring warning as min SDK version doesn't support collection literals yet
-      // ignore: prefer_collection_literals
-      Map<String, JavascriptChannel>();
+  // ignoring warning as min SDK version doesn't support collection literals yet
+  // ignore: prefer_collection_literals
+  Map<String, JavascriptChannel>();
 
   Future<Null> _handleMessages(MethodCall call) async {
     switch (call.method) {
@@ -81,7 +81,7 @@ class FlutterWebviewPlugin {
         break;
       case 'javascriptChannelMessage':
         _handleJavascriptChannelMessage(
-            call.arguments['channel'], call.arguments['message']);
+            call.arguments['channel'], call.arguments['message'],call.arguments['handlerName']);
         break;
     }
   }
@@ -323,20 +323,19 @@ class FlutterWebviewPlugin {
 
   Set<String> _extractJavascriptChannelNames(Set<JavascriptChannel> channels) {
     final Set<String> channelNames = channels == null
-        // ignore: prefer_collection_literals
+    // ignore: prefer_collection_literals
         ? Set<String>()
         : channels.map((JavascriptChannel channel) => channel.name).toSet();
     return channelNames;
   }
 
-  void _handleJavascriptChannelMessage(
+  void _handleJavascriptChannelMessage(final String channelName, final String message, final String handlername) {
       final String channelName, final String message) {
     _javascriptChannels[channelName]
-        .onMessageReceived(JavascriptMessage(message));
+        .onMessageReceived(JavascriptMessage(message, handlerName: handlername));
   }
 
-  void _assertJavascriptChannelNamesAreUnique(
-      final Set<JavascriptChannel> channels) {
+  void _assertJavascriptChannelNamesAreUnique(final Set<JavascriptChannel> channels) {
     if (channels == null || channels.isEmpty) {
       return;
     }
