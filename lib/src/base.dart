@@ -17,7 +17,7 @@ enum WebViewState { shouldStart, startLoad, finishLoad, abortLoad }
 /// Singleton class that communicate with a Webview Instance
 class FlutterWebviewPlugin {
   factory FlutterWebviewPlugin() {
-    if(_instance == null) {
+    if (_instance == null) {
       const MethodChannel methodChannel = const MethodChannel(_kChannel);
       _instance = FlutterWebviewPlugin.private(methodChannel);
     }
@@ -81,7 +81,7 @@ class FlutterWebviewPlugin {
         break;
       case 'javascriptChannelMessage':
         _handleJavascriptChannelMessage(
-            call.arguments['channel'], call.arguments['message'],call.arguments['handlerName']);
+            call.arguments['channel'], call.arguments['message'], call.arguments['handlerName']);
         break;
     }
   }
@@ -141,8 +141,7 @@ class FlutterWebviewPlugin {
   /// - [withOverviewMode]: enable overview mode for Android webview ( setLoadWithOverviewMode )
   /// - [useWideViewPort]: use wide viewport for Android webview ( setUseWideViewPort )
   /// - [ignoreSSLErrors]: use to bypass Android/iOS SSL checks e.g. for self-signed certificates
-  Future<Null> launch(
-    String url, {
+  Future<Null> launch(String url, {
     Map<String, String> headers,
     Set<JavascriptChannel> javascriptChannels,
     bool withJavascript,
@@ -274,7 +273,8 @@ class FlutterWebviewPlugin {
   // Clean cookies on WebView
   Future<Null> cleanCookies() async {
     // one liner to clear javascript cookies
-    await evalJavascript('document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });');
+    await evalJavascript(
+        'document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });');
     return await _channel.invokeMethod('cleanCookies');
   }
 
@@ -329,10 +329,9 @@ class FlutterWebviewPlugin {
     return channelNames;
   }
 
-  void _handleJavascriptChannelMessage(final String channelName, final String message, final String handlername) {
-      final String channelName, final String message) {
+  void _handleJavascriptChannelMessage(final String channelName, final String message, String handlerName) {
     _javascriptChannels[channelName]
-        .onMessageReceived(JavascriptMessage(message, handlerName: handlername));
+        .onMessageReceived(JavascriptMessage(message, handlerName: handlerName));
   }
 
   void _assertJavascriptChannelNamesAreUnique(final Set<JavascriptChannel> channels) {
