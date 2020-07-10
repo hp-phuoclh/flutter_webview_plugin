@@ -3,6 +3,8 @@ package com.flutter_webview_plugin;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.util.Log;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -18,6 +20,7 @@ import java.util.regex.Pattern;
  */
 
 public class BrowserClient extends WebViewClient {
+    final String TAG = BrowserClient.class.getSimpleName();
     private Pattern invalidUrlPattern = null;
 
     public BrowserClient() {
@@ -48,17 +51,46 @@ public class BrowserClient extends WebViewClient {
         FlutterWebviewPlugin.channel.invokeMethod("onState", data);
     }
 
+
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         Map<String, Object> data = new HashMap<>();
         data.put("url", url);
-
+        injectHandShakeJsCode(view);
         FlutterWebviewPlugin.channel.invokeMethod("onUrlChanged", data);
 
         data.put("type", "finishLoad");
         FlutterWebviewPlugin.channel.invokeMethod("onState", data);
 
+    }
+
+    /**
+     * @param view [WebView]
+     *             Inject js code to hand shake with webview client
+     * @author: Huu Hoang
+     */
+    private void injectHandShakeJsCode(WebView view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // hand shake
+            view.evaluateJavascript(JsCode.HAND_SHAKE, new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
+                    Log.e(TAG, "handShake with client: " + s);
+                }
+            });
+
+            // declare popup
+            view.evaluateJavascript(JsCode.SHOW_POPUP, new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
+                    Log.e(TAG, "SHOW_DATA_ with client: " + s);
+                }
+            });
+        } else {
+            view.loadUrl("javascript:" + JsCode.HAND_SHAKE);
+            view.loadUrl("javascript:" + JsCode.SHOW_POPUP);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

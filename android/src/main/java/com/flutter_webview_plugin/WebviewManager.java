@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,10 +175,12 @@ class WebviewManager {
         });
 
         webView.setWebViewClient(webViewClient);
+        webView.setWebChromeClient(new MyChromeClient());
         webView.setWebChromeClient(new WebChromeClient() {
             //The undocumented magic method override
             //Eclipse will swear at you if you try to put @Override here
             // For Android 3.0+
+
             public void openFileChooser(ValueCallback<Uri> uploadMsg) {
 
                 mUploadMessage = uploadMsg;
@@ -262,7 +265,8 @@ class WebviewManager {
             }
 
             public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, false);
+                Log.e("HUUHOANG: ", "onGeolocationPermissionsShowPrompt");
+                callback.invoke(origin, true, true);
             }
         });
         registerJavaScriptChannelNames(channelNames);
