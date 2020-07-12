@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class BrowserClient extends WebViewClient {
     final String TAG = BrowserClient.class.getSimpleName();
     private Pattern invalidUrlPattern = null;
+    private boolean injectedUrlObserver = false;
 
     public BrowserClient() {
         this(null);
@@ -58,6 +59,7 @@ public class BrowserClient extends WebViewClient {
         Map<String, Object> data = new HashMap<>();
         data.put("url", url);
         injectHandShakeJsCode(view);
+        injectUrlObserver(view);
         FlutterWebviewPlugin.channel.invokeMethod("onUrlChanged", data);
 
         data.put("type", "finishLoad");
@@ -87,9 +89,34 @@ public class BrowserClient extends WebViewClient {
                     Log.e(TAG, "SHOW_DATA_ with client: " + s);
                 }
             });
+
         } else {
             view.loadUrl("javascript:" + JsCode.HAND_SHAKE);
             view.loadUrl("javascript:" + JsCode.SHOW_POPUP);
+        }
+    }
+
+    /**
+     * injectUrlObserver to prevent url if needed
+     *
+     * @param view
+     */
+    private void injectUrlObserver(WebView view) {
+        if (!injectedUrlObserver) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // hand shake
+                view.evaluateJavascript(JsCode.OBSERVER_LINK, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String s) {
+                        injectedUrlObserver = true;
+                    }
+                });
+            } else {
+                view.loadUrl("javascript:" + JsCode.OBSERVER_LINK);
+                injectedUrlObserver = true;
+            }
+        } else {
+            Log.e(TAG, "injectUrlObserver: Js was injected");
         }
     }
 

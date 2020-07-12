@@ -40,4 +40,28 @@ public class JsCode {
             "      console.log(window._FLUTTER_DATA_LinkGroups_[index]);\nvar data = JSON.stringify(window._FLUTTER_DATA_LinkGroups_[index]);" +
             "      window.flutter_inappwebview.callHandler('clickStation',data);\n" +
             "    }";
+    
+    public static final String OBSERVER_LINK = "var links = document.body.getElementsByTagName(\"a\");\n" +
+            "\n" +
+            "\t\t\tfor (var i = 0; i < links.length; i++) {\n" +
+            "\t\t\t\t// console.log(links[i]);\n" +
+            "\t\t\t\tlinks[i].addEventListener('click', function (e) {\n" +
+            "\n" +
+            "\t\t\t\t\tvar urlTarget = e.target.href;\n" +
+            "\t\t\t\t\tif (urlTarget.includes('userapp.sride.jp') ||\n" +
+            "\t\t\t\t\t\turlTarget.includes('mapp=out') ||\n" +
+            "\t\t\t\t\t\turlTarget.includes('japantaxi://') ||\n" +
+            "\t\t\t\t\t\turlTarget.includes('https://app.adjust.com/yt3krez') ||\n" +
+            "\t\t\t\t\t\turlTarget.includes('https://app.adjust.com/p029mdy')) {\n" +
+            "\t\t\t\t\t\tconsole.log(e.target.href);\n" +
+            "\t\t\t\t\t\talert(\"ping\")\n" +
+            "\t\t\t\t\t\te.preventDefault();\n" +
+            "\t\t\t\t\t\tvar raw = { clickedUrl: e.target.href };\n" +
+            "\t\t\t\t\t\tvar data = JSON.stringify(raw);\n" +
+            "\t\t\t\t\t\twindow.flutter_inappwebview.callHandler('preventedURL', data);\n" +
+            "\n" +
+            "\t\t\t\t\t}\n" +
+            "\n" +
+            "\t\t\t\t})\n" +
+            "\t\t\t}";
 }
