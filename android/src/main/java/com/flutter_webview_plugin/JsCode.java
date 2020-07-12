@@ -54,7 +54,6 @@ public class JsCode {
             "\t\t\t\t\t\turlTarget.includes('https://app.adjust.com/yt3krez') ||\n" +
             "\t\t\t\t\t\turlTarget.includes('https://app.adjust.com/p029mdy')) {\n" +
             "\t\t\t\t\t\tconsole.log(e.target.href);\n" +
-            "\t\t\t\t\t\talert(\"ping\")\n" +
             "\t\t\t\t\t\te.preventDefault();\n" +
             "\t\t\t\t\t\tvar raw = { clickedUrl: e.target.href };\n" +
             "\t\t\t\t\t\tvar data = JSON.stringify(raw);\n" +
