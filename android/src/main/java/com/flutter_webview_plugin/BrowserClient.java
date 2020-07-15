@@ -90,9 +90,19 @@ public class BrowserClient extends WebViewClient {
                 }
             });
 
+            // CLOSE_DIALOG_OUTSIDE_CLICK
+            view.evaluateJavascript(JsCode.CLOSE_DIALOG_OUTSIDE_CLICK, new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
+                    Log.e(TAG, "SHOW_DATA_ with client: " + s);
+                }
+            });
+
+
         } else {
             view.loadUrl("javascript:" + JsCode.HAND_SHAKE);
             view.loadUrl("javascript:" + JsCode.SHOW_POPUP);
+            view.loadUrl("javascript:" + JsCode.CLOSE_DIALOG_OUTSIDE_CLICK);
         }
     }
 

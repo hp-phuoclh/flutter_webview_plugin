@@ -5,7 +5,7 @@ function showPopup(data) {
       document.head.appendChild(styleSheet);
       var modal = document.getElementById("flutter_modal");
       if (!modal) {
-        var html = '<div id="flutter_modal" class="flutter_modal">' + '<div class="flutter_modal-content"> <div class="flutter_close "><span>&times;</span></div><div class="flutter_modal_header"> '+  data["dialogs"]["StationName"] + '駅の情報'  +'</div><div id="flutter_table_content"><table class="flutter_modal_table"><tbody><tr><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td><td> 駅構内図</td><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td></tr><tr><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td><td>駅構内図</td><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td></tr></tbody></table></div></div></div>';
+        var html = '<div id="flutter_modal" class="flutter_modal">' + '<div class="flutter_modal-content"> <div class="flutter_close "><span class="flutter_close_span">&times;</span></div><div class="flutter_modal_header"> '+  data["dialogs"]["StationName"] + '駅の情報'  +'</div><div id="flutter_table_content"><table class="flutter_modal_table"><tbody><tr><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td><td> 駅構内図</td><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td></tr><tr><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td><td>駅構内図</td><td> <img class="flutter_modal_left_icon" src="https://stg-admin.tokyometro-app.com/453e4e9dc82a4a5eaa52910cf61aaaff/icon/ic_map.png"></td></tr></tbody></table></div></div></div>';
         var divg = document.createElement("div");
         divg.innerHTML = html;
         document.body.appendChild(divg);
@@ -14,6 +14,9 @@ function showPopup(data) {
       window._FLUTTER_DATA_LinkGroups_ = data["dialogs"]["LinkGroups"];
 
       var table = "<table class='flutter_modal_table'><tbody>" ;
+      data["dialogs"]["LinkGroups"].sort(function(a,b) {
+        return b["Sort"] - a["Sort"];
+      });
       for(var i =0; i< data["dialogs"]["LinkGroups"].length; i++) {
         var tdData = data["dialogs"]["LinkGroups"][i];
         if(parseInt(tdData["Sort"]) < 0){
@@ -33,6 +36,26 @@ function showPopup(data) {
         modal.style.display = "none";
       }
       modal.style.display = "block";
+    }
+
+    function closeDialog(){
+        alert("yeye");
+         document.getElementById("flutter_modal").style.display = "none";
+    }
+
+    function closeDialogOnClickOutsideModelPopup(){
+        window.onclick = function(event) {
+            if (event.target.className == "flutter_close" || event.target.className == "flutter_close_span") {
+                document.getElementById("flutter_modal").style.display = "none";
+                return;
+            }
+            if (event.target != document.getElementById("flutter_modal")) {
+                    alert("clicking111");
+                 document.getElementById("flutter_modal").style.display = "block";
+                }else{
+                    document.getElementById("flutter_modal").style.display = "none";
+                }
+        }
     }
 
     function flutterClickRow(index) {
