@@ -50,7 +50,6 @@ function showPopup(data) {
                 return;
             }
             if (event.target != document.getElementById("flutter_modal")) {
-                    alert("clicking111");
                  document.getElementById("flutter_modal").style.display = "block";
                 }else{
                     document.getElementById("flutter_modal").style.display = "none";

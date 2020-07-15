@@ -54,7 +54,6 @@ public class JsCode {
             "                return;\n" +
             "            }\n" +
             "            if (event.target != document.getElementById(\"flutter_modal\")) {\n" +
-            "                    alert(\"clicking111\");\n" +
             "                 document.getElementById(\"flutter_modal\").style.display = \"block\";\n" +
             "                }else{\n" +
             "                    document.getElementById(\"flutter_modal\").style.display = \"none\";\n" +
@@ -97,7 +96,6 @@ public class JsCode {
             "                return;\n" +
             "            }\n" +
             "            if (event.target != document.getElementById(\"flutter_modal\")) {\n" +
-            "                    alert(\"clicking111\");\n" +
             "                 document.getElementById(\"flutter_modal\").style.display = \"block\";\n" +
             "                }else{\n" +
             "                    document.getElementById(\"flutter_modal\").style.display = \"none\";\n" +
